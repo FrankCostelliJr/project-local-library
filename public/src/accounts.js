@@ -24,24 +24,21 @@ function numberOfBorrows(account, books) {
 
 
 function getBooksPossessedByAccount(account, books, authors) {
+  /**CODE HAS BEEN UPDATED PER GRADING TEAM REQUEST - ALL SINGLE LETTER VARIABLES REMOVED */
   //return an array of books and authors of all the currently checked out books.
   let possessedBooks = []; //create an empty result array
-
-  for(let i = 0; i < books.length; i++) {
-    let book = books[i]; 
-    const {id, title, genre, borrows} = book; //deconstruct each book as you loop through
-    for(let j = 0; j < borrows.length; j++) {
-      if(borrows[j].id === account.id && borrows[j].returned === false) {//checking for the borrow id matches account id, and whether the book is returned
-        for(let k = 0; k < authors.length; k++) {
-          let author = authors[k];
-          if(author.id === book.authorId) { //checking final condition
-            let tempBook = { id, title, genre, author, borrows };//construct new object and push to array
+  books.forEach(book => {const {id, title, genre, borrows} = book;
+    borrows.forEach(borrow => {
+      if(borrow.id === account.id && borrow.returned === false) {
+        authors.forEach(author => {
+          if(author.id === book.authorId) {
+            let tempBook = { id, title, genre, author, borrows };
             possessedBooks.push(tempBook);
           }
-        }
+        });
       }
-    }
-  }
+    });
+  });
   return possessedBooks;
     
 }
